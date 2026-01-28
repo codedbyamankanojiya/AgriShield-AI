@@ -1,0 +1,227 @@
+[
+    {
+        "disease_name": "AgriShield Root Rot (Custom)",
+        "affected_plants": [
+            "Tomato",
+            "Potato",
+            "Pepper"
+        ],
+        "prevention": "AgriShield Protocol: Ensure soil drainage. Use raised beds.",
+        "organic_cure": "AgriShield Special Mix: Hydrogen Peroxide (3%) diluted 1:10 with water.",
+        "pesticides": [
+            "Custom Fungi-Guard"
+        ]
+    },
+    {
+        "disease_name": "Apple Scab",
+        "affected_plants": [
+            "Apple"
+        ],
+        "prevention": "Rake and destroy fallen leaves. Prune to open canopy.",
+        "organic_cure": "Sulfur spray or Potassium Bicarbonate.",
+        "pesticides": [
+            "Captan",
+            "Myclobutanil"
+        ]
+    },
+    {
+        "disease_name": "Apple Black Rot",
+        "affected_plants": [
+            "Apple"
+        ],
+        "prevention": "Remove mummified fruit and dead wood.",
+        "organic_cure": "Copper fungicide.",
+        "pesticides": [
+            "Thiophanate-methyl",
+            "Captan"
+        ]
+    },
+    {
+        "disease_name": "Cedar Apple Rust",
+        "affected_plants": [
+            "Apple"
+        ],
+        "prevention": "Remove nearby cedar/juniper trees if possible.",
+        "organic_cure": "Sulfur or Copper fungicide.",
+        "pesticides": [
+            "Myclobutanil"
+        ]
+    },
+    {
+        "disease_name": "Corn Common Rust",
+        "affected_plants": [
+            "Corn"
+        ],
+        "prevention": "Plant resistant hybrids.",
+        "organic_cure": "Usually not required unless severe. Copper fungicide.",
+        "pesticides": [
+            "Azoxystrobin",
+            "Pyraclostrobin"
+        ]
+    },
+    {
+        "disease_name": "Corn Gray Leaf Spot",
+        "affected_plants": [
+            "Corn"
+        ],
+        "prevention": "Crop rotation and resistant varieties.",
+        "organic_cure": "Neem oil in early stages.",
+        "pesticides": [
+            "Strobilurin fungicides"
+        ]
+    },
+    {
+        "disease_name": "Grape Black Rot",
+        "affected_plants": [
+            "Grape"
+        ],
+        "prevention": "Remove mummies. Good air circulation.",
+        "organic_cure": "Copper fungicide.",
+        "pesticides": [
+            "Mancozeb",
+            "Myclobutanil"
+        ]
+    },
+    {
+        "disease_name": "Grape Downy Mildew",
+        "affected_plants": [
+            "Grape"
+        ],
+        "prevention": "Canopy management to reduce humidity.",
+        "organic_cure": "Copper-based compounds.",
+        "pesticides": [
+            "Mefenoxam"
+        ]
+    },
+    {
+        "disease_name": "Citrus Greening (Huanglongbing)",
+        "affected_plants": [
+            "Orange",
+            "Lemon",
+            "Citrus"
+        ],
+        "prevention": "Control psyllid vectors. Use disease-free nursery stock.",
+        "organic_cure": "No cure. Improved nutrition helps tree survival.",
+        "pesticides": [
+            "Imidacloprid (for vector control only)"
+        ]
+    },
+    {
+        "disease_name": "Peach Bacterial Spot",
+        "affected_plants": [
+            "Peach"
+        ],
+        "prevention": "Resistant varieties. Avoid high nitrogen fertilizer.",
+        "organic_cure": "Copper sprays (caution: phytotoxicity).",
+        "pesticides": [
+            "Oxytetracycline"
+        ]
+    },
+    {
+        "disease_name": "Pepper Bacterial Spot",
+        "affected_plants": [
+            "Pepper",
+            "Tomato"
+        ],
+        "prevention": "Use clean seeds. Rotate crops.",
+        "organic_cure": "Copper fungicide.",
+        "pesticides": [
+            "Copper hydroxide + Mancozeb"
+        ]
+    },
+    {
+        "disease_name": "Potato Early Blight",
+        "affected_plants": [
+            "Potato",
+            "Tomato"
+        ],
+        "prevention": "Mulch to prevent soil splash. Drip irrigation.",
+        "organic_cure": "Copper fungicide or Bacillus subtilis.",
+        "pesticides": [
+            "Chlorothalonil",
+            "Mancozeb"
+        ]
+    },
+    {
+        "disease_name": "Potato Late Blight",
+        "affected_plants": [
+            "Potato",
+            "Tomato"
+        ],
+        "prevention": "Plant resistant varieties. Destroy cull piles.",
+        "organic_cure": "Copper fungicide (preventative only).",
+        "pesticides": [
+            "Chlorothalonil",
+            "Mefenoxam"
+        ]
+    },
+    {
+        "disease_name": "Strawberry Leaf Scorch",
+        "affected_plants": [
+            "Strawberry"
+        ],
+        "prevention": "Plant resistant varieties. Remove old leaves.",
+        "organic_cure": "Copper fungicide.",
+        "pesticides": [
+            "Captan",
+            "Thiram"
+        ]
+    },
+    {
+        "disease_name": "Tomato Bacterial Spot",
+        "affected_plants": [
+            "Tomato"
+        ],
+        "prevention": "Seed treatment. Crop rotation.",
+        "organic_cure": "Copper sprays.",
+        "pesticides": [
+            "Copper + Mancozeb"
+        ]
+    },
+    {
+        "disease_name": "Tomato Yellow Leaf Curl Virus",
+        "affected_plants": [
+            "Tomato"
+        ],
+        "prevention": "Control whiteflies. Use reflective mulches.",
+        "organic_cure": "Neem oil (for whiteflies). Remove infected plants.",
+        "pesticides": [
+            "Imidacloprid (for vector)"
+        ]
+    },
+    {
+        "disease_name": "Tomato Mosaic Virus",
+        "affected_plants": [
+            "Tomato"
+        ],
+        "prevention": "Wash hands (tobacco users). Disinfect tools.",
+        "organic_cure": "Milk spray (inactivates virus).",
+        "pesticides": [
+            "None (Viral)"
+        ]
+    },
+    {
+        "disease_name": "Powdery Mildew",
+        "affected_plants": [
+            "Cucumber",
+            "Squash",
+            "Pumpkin",
+            "Melon"
+        ],
+        "prevention": "Plant in full sun. Air circulation.",
+        "organic_cure": "Milk-water (40:60) or Baking soda + oil.",
+        "pesticides": [
+            "Sulfur",
+            "Myclobutanil"
+        ]
+    },
+    {
+        "disease_name": "Healthy",
+        "affected_plants": [
+            "All"
+        ],
+        "prevention": "Continue good care.",
+        "organic_cure": "None needed.",
+        "pesticides": "None needed."
+    }
+]

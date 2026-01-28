@@ -97,6 +97,11 @@ app.post('/api/sync', (req, res) => {
   });
 });
 
+// Health Check
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', model: 'gemini-1.5-flash' });
+});
+
 // Recent scans
 app.get('/api/scans', (req, res) => {
   db.all('SELECT * FROM scans ORDER BY timestamp DESC LIMIT 50', [], (err, rows) => {
@@ -141,29 +146,86 @@ app.use(bodyParser.json({ limit: '50mb' }));
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
+// Load Knowledge Base
+const treatmentsPath = path.resolve(__dirname, 'data', 'treatments.json');
+let treatmentsDB = [];
+try {
+  const data = require('fs').readFileSync(treatmentsPath, 'utf8');
+  treatmentsDB = JSON.parse(data);
+  console.log(`Loaded ${treatmentsDB.length} treatment profiles.`);
+} catch (e) {
+  console.warn("Failed to load treatments.json", e.message);
+}
+
+// Weather Service (Open-Meteo)
+async function getWeatherContext(lat, lon) {
+  if (!lat || !lon) return null;
+  try {
+    // Fetch past 7 days to see if conditions favored disease (e.g. high humidity)
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,precipitation_sum,relative_humidity_2m_mean&past_days=7&forecast_days=1&timezone=auto`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (!data.daily) return null;
+
+    // Calculate averages/sums for context
+    const recentRain = data.daily.precipitation_sum.reduce((a, b) => a + b, 0).toFixed(1);
+    const avgHum = (data.daily.relative_humidity_2m_mean.reduce((a, b) => a + b, 0) / data.daily.relative_humidity_2m_mean.length).toFixed(1);
+    const avgTemp = (data.daily.temperature_2m_max.reduce((a, b) => a + b, 0) / data.daily.temperature_2m_max.length).toFixed(1);
+
+    return {
+      summary: `Recent Weather (Last 7 Days): Total Rain: ${recentRain}mm, Avg Humidity: ${avgHum}%, Avg High Temp: ${avgTemp}°C.`,
+      isWet: recentRain > 20 || avgHum > 70,
+      isHot: avgTemp > 30
+    };
+  } catch (e) {
+    console.warn("Weather fetch failed:", e.message);
+    return null;
+  }
+}
+
 // AI Analysis Endpoint
 app.post('/api/analyze', async (req, res) => {
   try {
-    const { imageBase64 } = req.body;
+    const { imageBase64, latitude, longitude } = req.body;
     if (!imageBase64) {
       return res.status(400).json({ error: 'Image data required' });
     }
 
     if (!process.env.GEMINI_API_KEY) {
-       return res.status(503).json({ error: 'Server missing API Key for AI analysis' });
+      return res.status(503).json({ error: 'Server missing API Key for AI analysis' });
     }
+
+    // 1. Get Context
+    const weather = await getWeatherContext(latitude, longitude);
+    const weatherString = weather ? weather.summary : "Weather data unavailable.";
+
+    // 2. Prepare Knowledge Base Context (Simplified RAG)
+    // "Training" the AI by providing it with a specific set of known diseases and treatments.
+    const treatmentContext = JSON.stringify(treatmentsDB);
 
     // Remove header if present
     const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, "");
 
     const prompt = `Analyze this plant image for disease detection.
-    Focus heavily on visual symptoms and **SHAPE** of the fruit/vegetable/leaf.
+    
+    CONTEXT:
+    1. User Location: Lat ${latitude || 'N/A'}, Lon ${longitude || 'N/A'}
+    2. Environmental Context: ${weatherString}
+    3. TRAINING DATA (Known Diseases & Protocols): ${treatmentContext}
+    
+    TASK:
+    1. Identify the plant and any disease.
+    2. Check the **TRAINING DATA** first. If the visual symptoms match a disease in our database, use that diagnosis and treatment.
+    3. If no match in Training Data, use your General Agricultural Knowledge.
+    4. Use the **Weather Context** to explain WHY it might have happened.
     
     Structure your response EXACTLY as this JSON:
     {
       "disease_name": "Name of disease or 'Healthy'",
       "confidence": 0-100 (number),
-      "reasoning": "Brief explanation citing visual shapes, colors, and patterns observed.",
+      "reasoning": "Explanation citing visual symptoms, TRAINING DATA match (if any), and WEATHER factors.",
+      "treatment": "Recommended cure. Custom protocol from TRAINING DATA preferred.",
       "identified_plant": "Plant name"
     }
     Do not use Markdown code blocks. Just return the JSON string.`;
@@ -180,16 +242,16 @@ app.post('/api/analyze', async (req, res) => {
 
     const response = await result.response;
     const text = response.text();
-    
+
     // Clean up markdown if present
     const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
-    
+
     try {
-        const jsonResponse = JSON.parse(cleanText);
-        res.json(jsonResponse);
+      const jsonResponse = JSON.parse(cleanText);
+      res.json(jsonResponse);
     } catch (e) {
-        console.error("Failed to parse Gemini response:", text);
-        res.status(500).json({ error: 'Failed to parse AI response', raw: text });
+      console.error("Failed to parse Gemini response:", text);
+      res.status(500).json({ error: 'Failed to parse AI response', raw: text });
     }
 
   } catch (error) {
