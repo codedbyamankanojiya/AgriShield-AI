@@ -208,7 +208,7 @@ export function CameraCapture({ onCapture, onError }: CameraCaptureProps) {
 
             {/* Controls */}
             <div className="bg-nature-950/80 backdrop-blur-xl pb-safe-bottom pt-8 px-6 rounded-t-[2.5rem] border-t border-white/5 relative z-10 -mt-6 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
-                <div className="flex items-center justify-between max-w-sm mx-auto">
+                <div className="grid grid-cols-3 place-items-center max-w-sm mx-auto">
                     {/* Upload Button */}
                     <button
                         onClick={() => fileInputRef.current?.click()}

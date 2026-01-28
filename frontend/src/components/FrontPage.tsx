@@ -23,7 +23,7 @@ export function FrontPage({ onStart }: FrontPageProps) {
                         AgriShield
                     </h1>
                     <p className="text-nature-300 font-medium tracking-wide uppercase text-xs opacity-90">
-                        AI Plant Doctor
+                        AI Plant Scaner
                     </p>
                 </div>
             </header>
@@ -64,7 +64,6 @@ export function FrontPage({ onStart }: FrontPageProps) {
                     </p>
                 </div>
 
-                {/* Feature Grid */}
                 <div className="grid grid-cols-2 gap-4 w-full mt-4">
                     <div className="p-4 bg-nature-900/30 rounded-2xl border border-nature-800/50 backdrop-blur-sm flex flex-col items-center gap-2 text-center">
                         <Leaf className="w-6 h-6 text-nature-400" />
@@ -76,11 +75,6 @@ export function FrontPage({ onStart }: FrontPageProps) {
                     </div>
                 </div>
             </main>
-
-            {/* Footer */}
-            <footer className="py-6 text-nature-600 text-xs font-medium z-10">
-                Powered by Advanced AI
-            </footer>
         </div>
     );
 }
