@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
 import { CameraCapture } from './components/CameraCapture';
+import { FrontPage } from './components/FrontPage';
 import { initializeClassifier, type PredictionResult } from './services/classifier';
 import { saveScan, syncWithBackend } from './services/storage';
 import { ArrowLeft, Share2, Info, ShieldCheck, RefreshCw } from 'lucide-react';
 
-type Screen = 'camera' | 'result' | 'history';
+type Screen = 'home' | 'camera' | 'result' | 'history';
 
 function App() {
-  const [currentScreen, setCurrentScreen] = useState<Screen>('camera');
+  const [currentScreen, setCurrentScreen] = useState<Screen>('home');
   const [scanResult, setScanResult] = useState<{ result: PredictionResult; imageUri: string } | null>(null);
   const [isSyncing, setIsSyncing] = useState(false);
+
   const speak = (text: string, lang: string) => {
     try {
       const synth = window.speechSynthesis;
@@ -57,6 +59,10 @@ function App() {
     setScanResult(null);
     setCurrentScreen('camera');
   };
+
+  if (currentScreen === 'home') {
+    return <FrontPage onStart={() => setCurrentScreen('camera')} />;
+  }
 
   if (currentScreen === 'result' && scanResult) {
     const { result, imageUri } = scanResult;

@@ -128,6 +128,76 @@ app.get('/api/scans/stats', (req, res) => {
   });
 });
 
+// ... imports
+require('dotenv').config();
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+
+// Image upload limit increased for base64 images
+app.use(bodyParser.json({ limit: '50mb' }));
+
+// ... database setup ...
+
+// Initialize Gemini
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+// AI Analysis Endpoint
+app.post('/api/analyze', async (req, res) => {
+  try {
+    const { imageBase64 } = req.body;
+    if (!imageBase64) {
+      return res.status(400).json({ error: 'Image data required' });
+    }
+
+    if (!process.env.GEMINI_API_KEY) {
+       return res.status(503).json({ error: 'Server missing API Key for AI analysis' });
+    }
+
+    // Remove header if present
+    const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, "");
+
+    const prompt = `Analyze this plant image for disease detection.
+    Focus heavily on visual symptoms and **SHAPE** of the fruit/vegetable/leaf.
+    
+    Structure your response EXACTLY as this JSON:
+    {
+      "disease_name": "Name of disease or 'Healthy'",
+      "confidence": 0-100 (number),
+      "reasoning": "Brief explanation citing visual shapes, colors, and patterns observed.",
+      "identified_plant": "Plant name"
+    }
+    Do not use Markdown code blocks. Just return the JSON string.`;
+
+    const result = await model.generateContent([
+      prompt,
+      {
+        inlineData: {
+          data: base64Data,
+          mimeType: "image/jpeg",
+        },
+      },
+    ]);
+
+    const response = await result.response;
+    const text = response.text();
+    
+    // Clean up markdown if present
+    const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+    
+    try {
+        const jsonResponse = JSON.parse(cleanText);
+        res.json(jsonResponse);
+    } catch (e) {
+        console.error("Failed to parse Gemini response:", text);
+        res.status(500).json({ error: 'Failed to parse AI response', raw: text });
+    }
+
+  } catch (error) {
+    console.error('AI Analysis Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
