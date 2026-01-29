@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
-import { Camera, Image as ImageIcon, RotateCcw, ScanLine, Leaf } from 'lucide-react';
+import { Image as ImageIcon, RotateCcw, ScanLine, Leaf } from 'lucide-react';
 import { classifyImage, calibrateHealthyLeaf, type PredictionResult } from '../services/classifier';
 
 interface CameraCaptureProps {

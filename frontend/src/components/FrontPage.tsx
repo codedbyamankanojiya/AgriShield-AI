@@ -74,10 +74,10 @@ export function FrontPage({ onStart }: FrontPageProps) {
                 </div>
 
                 {/* Detect Message - Chat style */}
-                <div className="w-full max-w-xs flex justify-end mt-auto mb-6 relative animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-                    <div className="bg-nature-950/90 backdrop-blur-md border border-nature-700/30 text-white px-5 py-2.5 rounded-2xl rounded-tr-sm shadow-xl flex items-center gap-3">
-                        <span className="text-sm font-medium">Detect Disease</span>
-                        <div className="bg-white p-1.5 rounded-lg shadow-inner">
+                <div className="w-full max-w-xs flex justify-center mt-auto mb-8 relative animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+                    <div className="bg-nature-950/90 backdrop-blur-md border border-nature-700/30 text-white px-5 py-2.5 rounded-full shadow-xl flex items-center gap-3 group cursor-default hover:scale-105 transition-transform">
+                        <span className="text-sm font-medium tracking-wide">Detect Disease</span>
+                        <div className="bg-white p-1.5 rounded-full shadow-inner animate-pulse-slow">
                             <MessageSquare size={14} className="text-nature-900 fill-current" />
                         </div>
                     </div>
