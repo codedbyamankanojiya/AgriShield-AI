@@ -1,263 +1,115 @@
-# AgriShield AI
+# 🛡️ AgriShield AI
 
-**Production-Quality MVP**: Offline-first, on-device AI mobile application for crop disease detection with farmer-friendly UX and voice guidance in Hindi & Marathi.
+> **"Nature Meets Cyber"** — A Next-Gen Intelligent Platform for Crop Disease Detection.
 
-![AgriShield AI](./frontend/assets/plant-placeholder.png)
+AgriShield AI is a state-of-the-art web platform that empowers farmers with instant, AI-driven crop disease diagnosis. By combining **Google's Gemini 1.5 Flash** with **local weather intelligence** and a **specialized treatment knowledge base**, AgriShield provides not just a diagnosis, but a complete, context-aware recovery protocol.
 
-## 🌾 Overview
+![AgriShield AI Banner](frontend/public/vite.svg)
 
-AgriShield AI empowers farmers to detect crop diseases instantly using their smartphone camera. The app works 100% offline with on-device AI inference, stores data locally, and automatically syncs when internet becomes available.
+## ✨ Key Features
 
-### Key Features
+-   **🤖 Advanced AI Diagnostics**: Powered by **Gemini 1.5 Flash Multimodal AI**, capable of analyzing complex visual symptoms with high accuracy.
+-   **🌤️ Context-Aware RAG**: Integrates real-time **Hyper-Local Weather Data** (precip, humidity, temp) to understand *why* the disease occurred.
+-   **📚 Knowledge Retrieval**: Queries a curated `treatments.json` database to provide verified agricultural protocols, not just generic LLM advice.
+-   **🎨 Cyber-Nature UI**: A stunning, responsive interface featuring glassmorphism, fluid animations, and a farmer-first UX designed for clarity.
+-   **⚡ Real-Time Sync**: Syncs scan data with a robust **SQLite + Node.js** backend for historical tracking and outbreak monitoring.
 
-✅ **100% Offline AI** - Disease detection works without internet  
-✅ **On-Device Inference** - Privacy-first, no cloud processing  
-✅ **Voice Guidance** - Hindi & Marathi TTS for treatment recommendations  
-✅ **Farmer-Friendly UX** - Large buttons, icons, minimal text  
-✅ **Auto-Sync** - Background sync when connectivity available  
-✅ **GPS Tagging** - Privacy-preserving location tracking for outbreak monitoring  
-✅ **Scan History** - SQLite-based offline storage  
+## 🏗️ Tech Stack
 
-## 🏗️ Architecture
+### Frontend (User Interface)
+-   **Framework**: React 19 + Vite (Speed & Modern Features)
+-   **Styling**: TailwindCSS + Lucide React (Icons)
+-   **Storage**: IndexedDB (`idb`) for offline-capable caching
+-   **HTTP Client**: Native `fetch` with robust error handling
 
-```
-AgriShield-AI/
-├── frontend/          # React Native + Expo mobile app
-│   ├── screens/       # Camera, Result, History screens
-│   ├── services/      # AI classifier, voice, sync
-│   ├── storage/       # SQLite offline storage
-│   ├── utils/         # Image preprocessing, GPS
-│   └── assets/        # TensorFlow.js model, labels
-│
-└── backend/           # FastAPI + PostgreSQL sync server
-    ├── routers/       # Sync endpoints
-    ├── database.py    # SQLAlchemy models
-    └── schemas.py     # Pydantic validation
-```
+### Backend (Intelligence Layer)
+-   **Runtime**: Node.js + Express
+-   **AI Core**: Google Generative AI SDK (Gemini 1.5 Flash)
+-   **Database**: SQLite3 (Lightweight, reliable storage)
+-   **External APIs**: Open-Meteo (Weather), Google AI Studio
 
-### Tech Stack
+## 🚀 Getting Started
 
-**Frontend:**
-- React Native + Expo
-- TensorFlow.js (on-device ML)
-- SQLite (offline storage)
-- Expo Speech (Hindi/Marathi TTS)
-- Expo Camera & Location
-
-**Backend:**
-- FastAPI
-- PostgreSQL
-- SQLAlchemy
-- Pydantic v2
-
-**AI/ML:**
-- MobileNetV2 / EfficientNet (quantized)
-- PlantVillage dataset (38 disease classes)
-- 100% on-device inference
-
-## 🚀 Quick Start
+Follow these instructions to get the complete platform running locally.
 
 ### Prerequisites
+-   **Node.js** (v18 or higher)
+-   **Google Gemini API Key** (Get one at [aistudio.google.com](https://aistudio.google.com/))
 
-- Node.js 18+ and npm
-- Python 3.9+
-- PostgreSQL 14+ (for backend)
-- Expo CLI: `npm install -g expo-cli`
-- Android Studio / Xcode (for mobile development)
+### 1. Backend Setup
 
-### Frontend Setup
+The backend handles AI analysis, database operations, and weather data fetching.
 
 ```bash
-cd frontend
+cd backend
 
-# Install dependencies
+# 1. Install Dependencies
 npm install
 
-# Start Expo development server
-npm start
+# 2. Configure Environment
+# Create a .env file in the backend directory and add your key:
+echo "GEMINI_API_KEY=your_actual_api_key_here" > .env
 
-# Run on Android
-npm run android
-
-# Run on iOS
-npm run ios
+# 3. Start the Server
+npm run dev
 ```
 
-### Backend Setup
+> The server will start on `http://localhost:5000`. You should see "Connected to the SQLite database."
 
-```bash
-cd backend
+### 2. Frontend Setup
 
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Setup PostgreSQL database
-createdb agrishield
-
-# Run server
-uvicorn main:app --reload
-```
-
-## 📱 Model Setup
-
-**IMPORTANT**: The app requires a trained TensorFlow.js model to function.
-
-### Option 1: Use Pre-trained Model
-
-1. Download a pre-trained PlantVillage model converted to TensorFlow.js
-2. Place `model.json` and weight shards in `frontend/assets/model/`
-
-### Option 2: Train Your Own
-
-```bash
-# Train with TensorFlow/Keras
-python train_model.py
-
-# Convert to TensorFlow.js
-tensorflowjs_converter \
-    --input_format=keras \
-    ./model.h5 \
-    ./frontend/assets/model/
-```
-
-### Labels Configuration
-
-Update `frontend/assets/labels.json` with your disease classes, including:
-- Disease names (English, Hindi, Marathi)
-- Severity levels
-- Treatment recommendations
-
-## 🎨 UI Design
-
-The app features a beautiful dark green theme inspired by agriculture:
-
-- **Primary Color**: `#1a3a2e` (Dark Green)
-- **Accent Color**: `#4ade80` (Vibrant Green)
-- **Background**: `#0f1f1a` (Deep Dark)
-
-### Screens
-
-1. **Camera Screen** - Scan crop leaves with large capture button
-2. **Result Screen** - Color-coded disease info with voice playback
-3. **History Screen** - Past scans with sync status
-
-## 🔊 Voice Features
-
-- Automatic playback of results in selected language
-- Support for Hindi (`hi-IN`) and Marathi (`mr-IN`)
-- Treatment recommendations narrated clearly
-- Replay button for farmers
-
-## 📊 Data Privacy
-
-- **GPS Rounding**: Coordinates rounded to ~1km precision
-- **Anonymized Sync**: No personal data sent to server
-- **Local-First**: All data stored on device first
-- **Optional Sync**: Farmers control when to sync
-
-## 🌐 API Endpoints
-
-### POST `/api/sync`
-Sync batch of offline scan data
-
-**Request:**
-```json
-{
-  "scans": [
-    {
-      "diseaseId": 5,
-      "diseaseName": "Tomato Late Blight",
-      "confidence": 94.5,
-      "latitude": 18.52,
-      "longitude": 73.85,
-      "timestamp": 1706380800000
-    }
-  ]
-}
-```
-
-**Response:**
-```json
-{
-  "success": true,
-  "synced_count": 1,
-  "message": "Successfully synced 1 scans"
-}
-```
-
-### GET `/api/scans`
-Retrieve recent scans for analytics
-
-### GET `/api/scans/stats`
-Get disease distribution statistics
-
-## 🧪 Testing
-
-### Frontend
-```bash
-cd frontend
-npm start
-# Use Expo Go app on your phone
-```
-
-### Backend
-```bash
-cd backend
-pytest  # Add tests in tests/ directory
-```
-
-## 📦 Deployment
-
-### Frontend (Mobile App)
+The frontend provides the user interface for capturing images and viewing results.
 
 ```bash
 cd frontend
 
-# Build for Android
-eas build --platform android
+# 1. Install Dependencies
+npm install
 
-# Build for iOS
-eas build --platform ios
+# 2. Start the Development Server
+npm run dev
 ```
 
-### Backend (Server)
+> The app will launch at `http://localhost:5173`. Open this URL in your browser.
 
-```bash
-# Using Docker
-docker build -t agrishield-backend .
-docker run -p 8000:8000 agrishield-backend
+## 📖 How It Works (RAG Pipeline)
 
-# Or deploy to cloud (AWS, GCP, Azure, Heroku)
-```
+1.  **Image Capture**: User uploads or snaps a photo of a crop.
+2.  **Context Gathering**:
+    *   **Weather**: Backend fetches past 7-day weather history for the user's GPS location.
+    *   **Knowledge Base**: Backend loads known treatment protocols for potential matches.
+3.  **Multimodal Analysis**:
+    *   The Image, Weather Data, and Knowledge Base are sent to **Gemini 1.5**.
+    *   Gemini reasons across these inputs to determine the disease and recommend a cure.
+4.  **Result**: The user receives a structured report with Confidence Score, Reasoning, and verified Treatment.
+
+## 🌐 API Reference
+
+### `POST /api/analyze`
+Analyzes a plant image for disease.
+*   **Body**: `{ "imageBase64": "...", "latitude": 12.34, "longitude": 56.78 }`
+*   **Returns**: JSON with disease name, confidence, reasoning, and treatment.
+
+### `GET /api/scans`
+Retrieves history of recent scans from the local database.
+
+### `GET /api/scans/stats`
+Returns aggregate statistics like disease distribution and average confidence levels.
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+We welcome contributions! Please fork the repository and submit a Pull Request.
+
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
 
 ## 📄 License
 
-MIT License - see LICENSE file for details
-
-## 🙏 Acknowledgments
-
-- PlantVillage dataset for disease images
-- TensorFlow.js team for on-device ML
-- Expo team for React Native framework
-- Farmers who inspired this project
-
-## 📞 Support
-
-For issues or questions:
-- Create an issue on GitHub
-- Email: support@agrishield.ai
+Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
-**Built with ❤️ for farmers**
+**Built with ❤️ for Kisaan (Farmers)**
