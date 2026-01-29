@@ -6,19 +6,34 @@ export default {
     ],
     theme: {
         extend: {
+            fontFamily: {
+                sans: ['Inter', 'sans-serif'],
+            },
             colors: {
                 nature: {
-                    950: '#0f291e', // Darker background
-                    900: '#1a3a2e',
+                    950: '#051f15', // Deep cyber-nature dark
+                    900: '#0b2b1e',
                     800: '#163328',
-                    700: '#2d5a4c',
-                    600: '#38725f',
-                    500: '#438e75',
-                    400: '#4ade80', // Vibrant Action
-                    300: '#86efac',
-                    200: '#bbf7d0',
-                    100: '#dcfce7',
+                    700: '#1c4a3a',
+                    600: '#2d7a5d',
+                    500: '#10b981', // Emerald primary
+                    400: '#34d399', // Bright accent
+                    300: '#6ee7b7',
+                    200: '#a7f3d0',
+                    100: '#ecfdf5',
                     50: '#f0fdf4',
+                }
+            },
+            animation: {
+                'scan': 'scan 2s ease-in-out infinite',
+                'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            keyframes: {
+                scan: {
+                    '0%, 100%': { transform: 'translateY(-100%)', opacity: '0' },
+                    '10%': { opacity: '1' },
+                    '50%': { transform: 'translateY(100%)', opacity: '1' },
+                    '90%': { opacity: '1' },
                 }
             }
         },

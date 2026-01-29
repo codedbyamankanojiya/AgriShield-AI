@@ -1,4 +1,6 @@
-import { Camera, Shield, Leaf, ScanLine } from 'lucide-react';
+import { Camera, Upload, ChevronDown, MessageSquare } from 'lucide-react';
+import { WeatherWidget } from './WeatherWidget';
+import { ParticleBackground } from './ParticleBackground';
 
 interface FrontPageProps {
     onStart: () => void;
@@ -6,75 +8,104 @@ interface FrontPageProps {
 
 export function FrontPage({ onStart }: FrontPageProps) {
     return (
-        <div className="min-h-screen w-full bg-nature-950 text-white flex flex-col items-center relative overflow-hidden">
-            {/* Background Effects */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-0 right-0 w-96 h-96 bg-nature-600/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-                <div className="absolute bottom-0 left-0 w-80 h-80 bg-nature-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+        <div className="min-h-screen w-full bg-black text-white flex flex-col relative overflow-hidden font-sans">
+            {/* Background Image */}
+            <div className="absolute inset-0 z-0 select-none">
+                <img
+                    src="/bg.png"
+                    alt="Background"
+                    className="w-full h-full object-cover opacity-90 animate-fade-in"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/90" />
+                <ParticleBackground />
             </div>
 
             {/* Header */}
-            <header className="pt-16 pb-8 flex flex-col items-center gap-4 z-10 animate-fade-in-down">
-                <div className="p-4 bg-nature-900/50 rounded-2xl ring-1 ring-nature-700/50 shadow-xl backdrop-blur-md">
-                    <Shield className="w-12 h-12 text-nature-400 fill-nature-400/10" />
-                </div>
-                <div className="text-center space-y-2">
-                    <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-br from-white to-nature-200 bg-clip-text text-transparent">
-                        AgriShield
+            <header className="relative z-10 flex justify-between items-start pt-safe-top px-6 py-6 animate-slide-up">
+                <div className="flex flex-col">
+                    <h1 className="text-3xl font-bold leading-none tracking-tight text-white drop-shadow-md">
+                        Agri<span className="text-nature-400">Shield-AI</span>
                     </h1>
-                    <p className="text-nature-300 font-medium tracking-wide uppercase text-xs opacity-90">
-                        AI Plant Scaner
-                    </p>
                 </div>
+
+                <button className="flex items-center gap-1 bg-black/40 backdrop-blur-md border border-white/20 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-black/60 transition active:scale-95">
+                    English <ChevronDown size={14} />
+                </button>
             </header>
 
             {/* Main Content */}
-            <main className="flex-1 flex flex-col items-center justify-center w-full max-w-md px-6 z-10 gap-12 -mt-10">
+            <main className="relative z-10 flex-1 flex flex-col items-center pt-12 px-6">
 
-                {/* Hero Text */}
-                <div className="text-center space-y-4 max-w-xs">
-                    <h2 className="text-2xl font-semibold leading-tight text-nature-50">
-                        Instant Disease Detection
-                    </h2>
-                    <p className="text-nature-400/80 text-sm leading-relaxed">
-                        Scan your plants with AI to identify diseases and get treatment plans in seconds.
-                    </p>
-                </div>
-
-                {/* Big Camera Button */}
-                <div className="relative group">
-                    {/* Pulsing Rings */}
-                    <div className="absolute inset-0 bg-nature-500 rounded-full blur-2xl opacity-20 group-hover:opacity-30 transition-opacity duration-500 animate-pulse" />
-                    <div className="absolute inset-0 bg-nature-400 rounded-full opacity-10 animate-ping" />
-
+                {/* Scan Button Card */}
+                <div className="flex flex-col items-center gap-6 w-full max-w-xs animate-slide-up" style={{ animationDelay: '0.1s' }}>
                     <button
                         onClick={onStart}
-                        className="relative w-32 h-32 rounded-full bg-gradient-to-tr from-nature-800 to-nature-700 p-2 shadow-2xl shadow-nature-900/50 ring-1 ring-nature-500/30 transition-all duration-300 hover:scale-105 active:scale-95 group-hover:shadow-[0_0_40px_rgba(74,222,128,0.3)]"
+                        className="group relative w-56 h-56 bg-nature-900/40 backdrop-blur-xl rounded-[2.5rem] border border-white/10 flex flex-col items-center justify-center gap-4 shadow-[0_0_50px_rgba(0,0,0,0.4)] transition-all duration-500 hover:scale-105 active:scale-95 hover:bg-nature-950/60 overflow-hidden"
                     >
-                        <div className="w-full h-full rounded-full bg-gradient-to-br from-nature-900 to-nature-950 flex items-center justify-center border border-nature-600/30 group-hover:border-nature-400/50 transition-colors">
-                            <Camera className="w-12 h-12 text-nature-100 drop-shadow-lg group-hover:text-nature-50 transition-colors" />
+                        {/* Scanning Beam */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/10 to-transparent translate-y-[-100%] group-hover:animate-shimmer transition-opacity" />
+
+                        <div className="absolute top-5 right-5 text-nature-100/50 group-hover:text-nature-400 transition-colors">
+                            <LeafIcon className="w-8 h-8 rotate-12" />
                         </div>
 
-                        {/* Decorative scanning line in button */}
-                        <div className="absolute inset-x-8 h-0.5 bg-nature-400/50 top-1/2 -translate-y-1/2 shadow-[0_0_10px_rgba(74,222,128,0.8)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        {/* Camera Icon Container */}
+                        <div className="w-24 h-24 bg-white rounded-[1.2rem] flex items-center justify-center shadow-xl group-hover:shadow-nature-500/30 transition-all duration-300 relative z-10">
+                            <Camera className="w-12 h-12 text-nature-900" />
+                        </div>
+
+                        <div className="text-center relative z-10">
+                            <span className="block text-3xl font-bold text-white tracking-wide leading-none drop-shadow-lg">Scan</span>
+                            <span className="block text-3xl font-bold text-white tracking-wide leading-none drop-shadow-lg">Plant</span>
+                        </div>
+
+                        {/* Corner Brackets */}
+                        <div className="absolute top-5 left-5 w-5 h-5 border-t-2 border-l-2 border-white/30 rounded-tl-lg group-hover:border-nature-400/80 transition-colors" />
+                        <div className="absolute top-5 right-5 w-5 h-5 border-t-2 border-r-2 border-white/30 rounded-tr-lg group-hover:border-nature-400/80 transition-colors" />
+                        <div className="absolute bottom-5 left-5 w-5 h-5 border-b-2 border-l-2 border-white/30 rounded-bl-lg group-hover:border-nature-400/80 transition-colors" />
+                        <div className="absolute bottom-5 right-5 w-5 h-5 border-b-2 border-r-2 border-white/30 rounded-br-lg group-hover:border-nature-400/80 transition-colors" />
                     </button>
 
-                    <p className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-nature-300 font-medium text-sm whitespace-nowrap opacity-80 group-hover:opacity-100 transition-opacity">
-                        Tap into Scan
-                    </p>
+                    {/* Upload Button */}
+                    <button className="flex items-center gap-2 bg-nature-950/60 backdrop-blur-md px-8 py-3.5 rounded-full border border-white/10 text-nature-100 font-medium hover:bg-nature-900 hover:border-nature-500/30 transition-all shadow-lg active:scale-95">
+                        <Upload size={18} />
+                        Upload Image
+                    </button>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 w-full mt-4">
-                    <div className="p-4 bg-nature-900/30 rounded-2xl border border-nature-800/50 backdrop-blur-sm flex flex-col items-center gap-2 text-center">
-                        <Leaf className="w-6 h-6 text-nature-400" />
-                        <span className="text-xs font-medium text-nature-200">99% Accuracy</span>
-                    </div>
-                    <div className="p-4 bg-nature-900/30 rounded-2xl border border-nature-800/50 backdrop-blur-sm flex flex-col items-center gap-2 text-center">
-                        <ScanLine className="w-6 h-6 text-nature-400" />
-                        <span className="text-xs font-medium text-nature-200">Instant Results</span>
+                {/* Detect Message - Chat style */}
+                <div className="w-full max-w-xs flex justify-end mt-auto mb-6 relative animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+                    <div className="bg-nature-950/90 backdrop-blur-md border border-nature-700/30 text-white px-5 py-2.5 rounded-2xl rounded-tr-sm shadow-xl flex items-center gap-3">
+                        <span className="text-sm font-medium">Detect Disease</span>
+                        <div className="bg-white p-1.5 rounded-lg shadow-inner">
+                            <MessageSquare size={14} className="text-nature-900 fill-current" />
+                        </div>
                     </div>
                 </div>
+
             </main>
+
+            {/* Bottom Widget */}
+            <div className="relative z-10 px-4 pb-6 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+                <WeatherWidget />
+            </div>
         </div>
     );
+}
+
+function LeafIcon({ className }: { className?: string }) {
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={className}
+        >
+            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+        </svg>
+    )
 }
